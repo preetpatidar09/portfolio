@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preet Patidar - Modern Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    
+    :root {
+      --primary-bg: #0a0a0a;
+      --secondary-bg: #111111;
+      --accent-bg: #1a1a1a;
+      --primary-text: #ffffff;
+      --secondary-text: #a0a0a0;
+      --accent-color: #00d4ff;
+      --secondary-accent: #ff6b6b;
+      --tertiary-accent: #4ecdc4;
+      --quaternary-accent: #ffe66d;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(26, 26, 26, 0.8);
+    }
+    
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    body {
+      background: var(--primary-bg);
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+      background-attachment: fixed;
+      color: var(--primary-text);
+    }
+    
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modern-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0, 212, 255, 0.2);
+      border-color: var(--accent-color);
+    }
+    
+    .skill-badge {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .skill-badge::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .skill-badge:hover::before {
+      left: 100%;
+    }
+    
+    .skill-badge:hover {
+      transform: scale(1.05);
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--accent-color);
+    }
+    
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(1deg); }
+      50% { transform: translateY(-12px) rotate(0deg); }
+      75% { transform: translateY(-8px) rotate(-1deg); }
+    }
+    
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .bounce-in {
+      animation: bounceIn 2s ease-out 1s forwards;
+    }
+    
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-50px);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05) translateY(0);
+      }
+      70% {
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .text-glow {
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+      to { text-shadow: 0 0 30px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.6); }
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent), var(--tertiary-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      border: 1px solid var(--accent-color);
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    /* Mobile Navigation */
+    .mobile-menu {
+      transform: translateX(-100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+    }
+    
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--secondary-bg);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary-accent);
+    }
+    
+    /* Selection */
+    ::selection {
+      background: var(--accent-color);
+      color: var(--primary-bg);
+    }
+    
+    /* Carousel Image Consistency */
+    .carousel-slide img {
+      object-fit: cover;
+      object-position: center;
+      width: 100%;
+      height: 18rem; /* h-72 */
+    }
+    
+    @media (min-width: 640px) {
+      .carousel-slide img {
+        height: 24rem; /* sm:h-96 */
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .carousel-slide img {
+        height: 500px; /* lg:h-[500px] */
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Mobile Navigation Button -->
+  <div class="fixed top-6 left-6 z-50 lg:hidden">
+    <button id="mobile-menu-btn" class="modern-card rounded-xl p-4 text-white hover:neon-glow transition-all duration-300 group">
+      <i class="fas fa-bars text-xl group-hover:rotate-90 transition-transform duration-300"></i>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation Menu -->
+  <nav class="mobile-menu fixed top-0 left-0 w-72 h-full z-40 lg:hidden">
+    <div class="p-8 pt-24">
+      <div class="space-y-2">
+        <a href="#hero" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-home mr-3"></i>Home
+        </a>
+        <a href="#about" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-user mr-3"></i>About
+        </a>
+        <a href="#skills" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-code mr-3"></i>Skills
+        </a>
+        <a href="#projects" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-project-diagram mr-3"></i>Projects
+        </a>
+        <a href="#certificates" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-certificate mr-3"></i>Certificates
+        </a>
+        <a href="#aws-badges" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fab fa-aws mr-3"></i>AWS Badges
+        </a>
+        <a href="#education" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-graduation-cap mr-3"></i>Education
+        </a>
+        <a href="#contact" class="block text-white py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:translate-x-2">
+          <i class="fas fa-envelope mr-3"></i>Contact
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Desktop Navigation -->
+  <nav class="hidden lg:block fixed top-6 right-6 z-50">
+    <div class="modern-card rounded-2xl px-8 py-4">
+      <div class="flex space-x-8">
+        <a href="#hero" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          Home
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#about" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          About
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#skills" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          Skills
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#projects" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          Projects
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#certificates" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          Certificates
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#aws-badges" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          AWS Badges
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#education" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          Education
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#contact" class="text-white hover:text-cyan-400 transition-all duration-300 relative group">
+          Contact
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header id="hero" class="min-h-screen flex items-center justify-center px-6 py-12">
+    <div class="max-w-7xl mx-auto w-full">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+          <!-- Profile Image & Contact Info -->
+          <div class="flex flex-col sm:flex-row items-center gap-8 lg:gap-12 text-center sm:text-left">
+            <div class="flex-shrink-0 floating">
+              <div class="relative">
+                <img src="IMG.jpg" alt="Preet Patidar"
+                     class="w-36 h-36 sm:w-44 sm:h-44 lg:w-56 lg:h-56 rounded-full shadow-2xl object-cover border-4 border-cyan-400 transform transition-all duration-500 hover:scale-110 hover:border-pink-400 neon-glow">
+                <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border-4 border-black pulse"></div>
+                <div class="absolute -top-2 -left-2 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-ping"></div>
+              </div>
+            </div>
+            <div class="text-white">
+              <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                Preet Patidar
+              </h1>
+              <div class="mb-6">
+                <p class="text-xl sm:text-2xl lg:text-3xl gradient-text bounce-in text-glow font-semibold">
+                  Aspiring Data Engineer
+                </p>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 text-sm lg:text-base mb-6">
+                <div class="flex items-center justify-center sm:justify-start gap-3 modern-card px-4 py-2 rounded-full">
+                  <i class="fas fa-map-marker-alt text-cyan-400"></i>
+                  <span class="text-gray-300">Indore, Madhya Pradesh</span>
+                </div>
+                <div class="flex items-center justify-center sm:justify-start gap-3 modern-card px-4 py-2 rounded-full">
+                  <i class="fas fa-envelope text-pink-400"></i>
+                  <a href="mailto:preetpatidar115@gmail.com" class="text-gray-300 hover:text-cyan-400 transition-colors">preetpatidar115@gmail.com</a>
+                </div>
+                <div class="flex items-center justify-center sm:justify-start gap-3 modern-card px-4 py-2 rounded-full">
+                  <i class="fas fa-phone text-emerald-400"></i>
+                  <a href="tel:+91782834599" class="text-gray-300 hover:text-cyan-400 transition-colors">+91 782834599</a>
+                </div>
+              </div>
+              <div class="flex justify-center sm:justify-start gap-4">
+                <a href="https://github.com/preetpatidar09" target="_blank" class="modern-card rounded-full p-4 text-white hover:text-cyan-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+                  <i class="fab fa-github text-2xl group-hover:animate-pulse"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/preet-patidar-b59480249" target="_blank" class="modern-card rounded-full p-4 text-white hover:text-blue-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+                  <i class="fab fa-linkedin text-2xl group-hover:animate-pulse"></i>
+                </a>
+                <a href="https://wa.me/917828394599" target="_blank" class="modern-card rounded-full p-4 text-white hover:text-green-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+                  <i class="fab fa-whatsapp text-2xl group-hover:animate-pulse"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right-side Description -->
+          <div class="max-w-md lg:max-w-lg">
+            <div class="modern-card rounded-3xl p-8 text-white leading-relaxed border-l-4 border-cyan-400">
+              <div class="mb-4">
+                <span class="mono text-cyan-400 text-sm">// About me</span>
+              </div>
+              <p class="text-base lg:text-lg text-gray-300 mb-6">
+                Aspiring Data Engineer skilled in real-time and batch pipelines with tools like 
+                <span class="text-cyan-400 font-semibold">Kafka</span>, 
+                <span class="text-pink-400 font-semibold">Spark</span>, 
+                <span class="text-emerald-400 font-semibold">Hive</span>, and 
+                <span class="text-yellow-400 font-semibold">AWS services</span>.
+                Passionate about building scalable systems for actionable insights.
+              </p>
+              <a href="#about" class="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25 group">
+                <span class="font-semibold">Explore More</span>
+                <i class="fas fa-rocket group-hover:translate-x-1 transition-transform duration-300"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Me -->
+  <section id="about" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-user text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            About <span class="gradient-text">Me</span>
+          </h2>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div class="mb-6">
+              <span class="mono text-cyan-400 text-sm">// Personal Introduction</span>
+            </div>
+            <p class="text-gray-300 text-lg leading-relaxed mb-6">
+              I'm <span class="text-white font-semibold">Preet Patidar</span>, a Final-year 
+              <span class="text-cyan-400 font-semibold">B.Tech Computer Science</span> student at 
+              <span class="text-pink-400 font-semibold">Medi-Caps University</span> with a strong passion for 
+              <span class="text-emerald-400 font-semibold">data engineering</span>.
+            </p>
+            <p class="text-gray-300 text-lg leading-relaxed">
+              I specialize in designing data pipelines and working with cutting-edge tools like 
+              <span class="text-yellow-400 font-semibold">Spark</span>, 
+              <span class="text-red-400 font-semibold">Kafka</span>, and 
+              <span class="text-orange-400 font-semibold">AWS</span> to process and manage large-scale data systems. 
+              I enjoy transforming raw data into valuable insights and am currently building real-time and batch processing projects.
+            </p>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-cyan-400">
+              <div class="flex items-center gap-3 mb-3">
+                <i class="fas fa-target text-cyan-400 text-xl"></i>
+                <h3 class="text-xl font-semibold text-white">Mission</h3>
+              </div>
+              <p class="text-gray-300">Building scalable data systems that transform raw information into actionable business insights.</p>
+            </div>
+            
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-pink-400">
+              <div class="flex items-center gap-3 mb-3">
+                <i class="fas fa-lightbulb text-pink-400 text-xl"></i>
+                <h3 class="text-xl font-semibold text-white">Vision</h3>
+              </div>
+              <p class="text-gray-300">To contribute to innovative teams where I can grow as a Data Engineer and solve real-world challenges.</p>
+            </div>
+            
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-emerald-400">
+              <div class="flex items-center gap-3 mb-3">
+                <i class="fas fa-heart text-emerald-400 text-xl"></i>
+                <h3 class="text-xl font-semibold text-white">Passion</h3>
+              </div>
+              <p class="text-gray-300">Creating efficient data pipelines and exploring the latest technologies in big data and cloud computing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Skills -->
+  <section id="skills" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex items-center gap-4 mb-12">
+          <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-code text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            Technical <span class="gradient-text">Skills</span>
+          </h2>
+        </div>
+        
+        <div class="mb-8">
+          <span class="mono text-cyan-400 text-sm">// My Technology Stack</span>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-code text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Languages</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">C++</span>
+              <span class="inline-block bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">C</span>
+              <span class="inline-block bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">Python</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-database text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Databases</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm">MySQL</span>
+              <span class="inline-block bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm">MongoDB</span>
+              <span class="inline-block bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm">Cassandra</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-chart-bar text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Big Data</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-sm">Hadoop</span>
+              <span class="inline-block bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-sm">Spark</span>
+              <span class="inline-block bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-sm">Hive</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fab fa-aws text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Cloud</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">AWS Glue</span>
+              <span class="inline-block bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">EMR</span>
+              <span class="inline-block bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">S3</span>
+              <span class="inline-block bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">Lambda</span>
+              <span class="inline-block bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">Athena</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-cogs text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Automation</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm">Apache Airflow</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-warehouse text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Warehouse</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-sm">Redshift</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-bolt text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Realtime</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full text-sm">Apache Kafka</span>
+            </div>
+          </div>
+          
+          <div class="skill-badge modern-card rounded-2xl p-6 text-white group">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fas fa-chart-line text-white text-xl"></i>
+              </div>
+              <strong class="text-xl">Dashboards</strong>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-teal-500/20 text-teal-300 px-3 py-1 rounded-full text-sm">QuickSight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center gap-4 mb-12">
+        <div class="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+          <i class="fas fa-project-diagram text-white text-xl"></i>
+        </div>
+        <h2 class="text-4xl lg:text-5xl font-bold text-white">
+          Featured <span class="gradient-text">Projects</span>
+        </h2>
+      </div>
+      
+      <div class="mb-8">
+        <span class="mono text-cyan-400 text-sm">// Showcasing my data engineering expertise</span>
+      </div>
+      
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="modern-card rounded-3xl p-8 card-hover group">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              🎬
+            </div>
+            <div>
+              <h3 class="font-bold text-2xl lg:text-3xl text-white mb-2">Quality Movie Data Analysis</h3>
+              <span class="mono text-cyan-400 text-sm">// End-to-end data pipeline</span>
+            </div>
+          </div>
+          
+          <p class="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
+            Built a comprehensive data pipeline using <span class="text-cyan-400 font-semibold">PySpark</span> and 
+            <span class="text-orange-400 font-semibold">AWS Glue</span> to process IMDB & TMDB datasets. 
+            Implemented <span class="text-purple-400 font-semibold">Redshift star schema</span> and created 
+            interactive dashboards in <span class="text-yellow-400 font-semibold">QuickSight</span>.
+          </p>
+          
+          <div class="flex flex-wrap gap-3 mb-6">
+            <span class="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 text-blue-300 px-4 py-2 rounded-full text-sm font-medium">PySpark</span>
+            <span class="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30 text-orange-300 px-4 py-2 rounded-full text-sm font-medium">AWS Glue</span>
+            <span class="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 px-4 py-2 rounded-full text-sm font-medium">Redshift</span>
+            <span class="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 text-yellow-300 px-4 py-2 rounded-full text-sm font-medium">QuickSight</span>
+          </div>
+          
+          <a href="https://github.com/preetpatidar09/Quality-Movies-Data-Analysis" target="_blank" 
+             class="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group">
+            <i class="fab fa-github text-lg"></i>
+            <span class="font-semibold">View Project</span>
+            <i class="fas fa-external-link-alt text-sm group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+        
+        <div class="modern-card rounded-3xl p-8 card-hover group">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              ⚡
+            </div>
+            <div>
+              <h3 class="font-bold text-2xl lg:text-3xl text-white mb-2">StreamPulse Analytics</h3>
+              <span class="mono text-cyan-400 text-sm">// Real-time data streaming</span>
+            </div>
+          </div>
+          
+          <p class="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
+            Engineered a real-time streaming pipeline: <span class="text-green-400 font-semibold">MySQL</span> → 
+            <span class="text-red-400 font-semibold">Kafka</span> → <span class="text-orange-400 font-semibold">Spark</span> → 
+            <span class="text-purple-400 font-semibold">Cassandra</span>. Implemented CDC for real-time data transfer, 
+            optimized for concurrency and orchestrated with <span class="text-blue-400 font-semibold">Apache Airflow</span>.
+          </p>
+          
+          <div class="flex flex-wrap gap-3 mb-6">
+            <span class="bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-500/30 text-red-300 px-4 py-2 rounded-full text-sm font-medium">Kafka</span>
+            <span class="bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 text-orange-300 px-4 py-2 rounded-full text-sm font-medium">Spark</span>
+            <span class="bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/30 text-purple-300 px-4 py-2 rounded-full text-sm font-medium">Cassandra</span>
+            <span class="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 text-blue-300 px-4 py-2 rounded-full text-sm font-medium">Airflow</span>
+          </div>
+          
+          <a href="https://github.com/preetpatidar09/Real-time-streaming" target="_blank" 
+             class="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25 group">
+            <i class="fab fa-github text-lg"></i>
+            <span class="font-semibold">View Project</span>
+            <i class="fas fa-external-link-alt text-sm group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificates Carousel -->
+  <section id="certificates" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex items-center gap-4 mb-12">
+          <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-certificate text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            <span class="gradient-text">Certificates</span> Gallery
+          </h2>
+        </div>
+        
+        <div class="mb-8">
+          <span class="mono text-cyan-400 text-sm">// Professional certifications and project achievements</span>
+        </div>
+        
+        <div class="relative max-w-5xl mx-auto">
+          <!-- Carousel Container -->
+          <div class="carousel-container relative overflow-hidden rounded-3xl border border-gray-700">
+            <div class="carousel-track flex transition-transform duration-500 ease-in-out" id="carousel-track">
+              <!-- Image 1 - AWS Certification -->
+              <div class="carousel-slide min-w-full">
+                <div class="relative">
+                  <img src="AWS1.jpg" alt="AWS Certification Achievement" class="w-full">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-8">
+                    <div class="modern-card rounded-2xl p-6 border-l-4 border-cyan-400">
+                      <h3 class="text-white text-2xl font-bold mb-2">AWS Certification Achievement</h3>
+                      <p class="text-gray-300 text-lg mb-4">Official AWS certification demonstrating cloud computing expertise and technical proficiency</p>
+                      <a href="AWS1.jpg" download="AWS_Certification_1.jpg" class="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-4 py-2 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-semibold">
+                        <i class="fas fa-download"></i>
+                        <span>Download</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Image 2 - Data Analytics Certification -->
+              <div class="carousel-slide min-w-full">
+                <div class="relative">
+                  <img src="AWS2.jpg" alt="AWS Architecture Certification" class="w-full">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-8">
+                    <div class="modern-card rounded-2xl p-6 border-l-4 border-pink-400">
+                      <h3 class="text-white text-2xl font-bold mb-2">AWS Architecture Certification</h3>
+                      <p class="text-gray-300 text-lg mb-4">Professional certification in Architect and business intelligence methodologies</p>
+                      <a href="AWS2.jpg" download="Data_Analytics_Certification.jpg" class="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-semibold">
+                        <i class="fas fa-download"></i>
+                        <span>Download</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Image 3 - Certificate 1 -->
+              <div class="carousel-slide min-w-full">
+                <div class="relative">
+                  <img src="Certificate1.jpg" alt="Professional Certificate 1" class="w-full">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-8">
+                    <div class="modern-card rounded-2xl p-6 border-l-4 border-emerald-400">
+                      <h3 class="text-white text-2xl font-bold mb-2">Professional Certificate</h3>
+                      <p class="text-gray-300 text-lg mb-4">Industry-recognized certification demonstrating technical expertise and knowledge</p>
+                      <a href="Certificate1.jpg" download="Professional_Certificate_1.jpg" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-4 py-2 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-semibold">
+                        <i class="fas fa-download"></i>
+                        <span>Download</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Image 4 - Certificate 2 -->
+              <div class="carousel-slide min-w-full">
+                <div class="relative">
+                  <img src="Certificate2.jpg" alt="Professional Certificate 2" class="w-full">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-8">
+                    <div class="modern-card rounded-2xl p-6 border-l-4 border-yellow-400">
+                      <h3 class="text-white text-2xl font-bold mb-2">Technical Certification</h3>
+                      <p class="text-gray-300 text-lg mb-4">Advanced certification validating specialized skills in data engineering and analytics</p>
+                      <a href="Certificate2.jpg" download="Technical_Certificate_2.jpg" class="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white px-4 py-2 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-semibold">
+                        <i class="fas fa-download"></i>
+                        <span>Download</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Navigation Arrows -->
+          <button class="carousel-btn carousel-btn-prev absolute left-6 top-1/2 transform -translate-y-1/2 modern-card rounded-full p-4 text-white hover:text-cyan-400 hover:scale-110 transition-all z-10 group" id="prevBtn">
+            <i class="fas fa-chevron-left text-xl group-hover:-translate-x-1 transition-transform"></i>
+          </button>
+          <button class="carousel-btn carousel-btn-next absolute right-6 top-1/2 transform -translate-y-1/2 modern-card rounded-full p-4 text-white hover:text-cyan-400 hover:scale-110 transition-all z-10 group" id="nextBtn">
+            <i class="fas fa-chevron-right text-xl group-hover:translate-x-1 transition-transform"></i>
+          </button>
+          
+          <!-- Dots Indicator -->
+          <div class="carousel-dots flex justify-center space-x-4 mt-8" id="carousel-dots">
+            <button class="dot w-4 h-4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-100 transition-all active" data-slide="0"></button>
+            <button class="dot w-4 h-4 rounded-full bg-white opacity-30 hover:opacity-100 transition-all" data-slide="1"></button>
+            <button class="dot w-4 h-4 rounded-full bg-white opacity-30 hover:opacity-100 transition-all" data-slide="2"></button>
+            <button class="dot w-4 h-4 rounded-full bg-white opacity-30 hover:opacity-100 transition-all" data-slide="3"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- AWS Badges -->
+  <section id="aws-badges" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex items-center gap-4 mb-12">
+          <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+            <i class="fab fa-aws text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            AWS <span class="gradient-text">Badges</span>
+          </h2>
+        </div>
+        
+        <div class="mb-8">
+          <span class="mono text-cyan-400 text-sm">// Cloud expertise recognition from Amazon Web Services</span>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="modern-card rounded-3xl p-8 card-hover group border border-gray-700">
+            <div class="relative overflow-hidden rounded-2xl mb-6">
+              <img src="aws4.png" alt="AWS Cloud Practitioner Badge" class="w-full h-auto rounded-2xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+            <div class="text-center">
+              <h3 class="text-2xl font-bold text-white mb-3">AWS Cloud Practitioner</h3>
+              <p class="text-gray-300 text-lg mb-4">Foundational understanding of AWS Cloud concepts, services, and terminology</p>
+              <div class="flex flex-col items-center gap-4">
+                <span class="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30 text-orange-300 px-4 py-2 rounded-full text-sm font-medium">
+                  <i class="fab fa-aws mr-2"></i>Foundational Level
+                </span>
+                <a href="aws4.png" download="AWS_Cloud_Practitioner_Badge.png" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-6 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-semibold">
+                  <i class="fas fa-download"></i>
+                  <span>Download Badge</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modern-card rounded-3xl p-8 card-hover group border border-gray-700">
+            <div class="relative overflow-hidden rounded-2xl mb-6">
+              <img src="aws3.png" alt="AWS Solutions Architect Badge" class="w-full h-auto rounded-2xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+            <div class="text-center">
+              <h3 class="text-2xl font-bold text-white mb-3">AWS Solutions Architect</h3>
+              <p class="text-gray-300 text-lg mb-4">Advanced skills in designing distributed systems and architectures on AWS</p>
+              <div class="flex flex-col items-center gap-4">
+                <span class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 text-blue-300 px-4 py-2 rounded-full text-sm font-medium">
+                  <i class="fab fa-aws mr-2"></i>Associate Level
+                </span>
+                <a href="aws3.png" download="AWS_Solutions_Architect_Badge.png" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-semibold">
+                  <i class="fas fa-download"></i>
+                  <span>Download Badge</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-12 text-center">
+          <div class="modern-card rounded-2xl p-6 border-l-4 border-orange-400">
+            <div class="flex items-center justify-center gap-3 mb-3">
+              <i class="fas fa-trophy text-orange-400 text-2xl"></i>
+              <h3 class="text-xl font-semibold text-white">Cloud Expertise</h3>
+            </div>
+            <p class="text-gray-300 text-lg">
+              These AWS badges demonstrate my commitment to cloud technologies and validate my skills in 
+              designing, deploying, and managing applications on the Amazon Web Services platform.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resume -->
+  <section class="py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-file-alt text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            My <span class="gradient-text">Resume</span>
+          </h2>
+        </div>
+        
+        <div class="mb-8">
+          <span class="mono text-cyan-400 text-sm">// Download my complete professional profile</span>
+        </div>
+        
+        <p class="mb-10 text-gray-300 text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto">
+          Get a comprehensive overview of my skills, experience, and achievements in data engineering. 
+          Download my resume to learn more about my professional journey.
+        </p>
+        
+        <a href="resume.pdf" download class="inline-flex items-center gap-4 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-10 py-5 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 text-xl font-semibold group">
+          <i class="fas fa-download text-2xl group-hover:animate-bounce"></i>
+          <span>Download Resume</span>
+          <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform duration-300"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education & Achievements -->
+  <section id="education" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in">
+        <div class="flex items-center gap-4 mb-12">
+          <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-graduation-cap text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            Education & <span class="gradient-text">Achievements</span>
+          </h2>
+        </div>
+        
+        <div class="mb-8">
+          <span class="mono text-cyan-400 text-sm">// Academic background and coding accomplishments</span>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-6">
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-cyan-400 group hover:scale-105 transition-transform">
+              <div class="flex items-center gap-4 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <i class="fas fa-university text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl text-white">B.Tech in Computer Science</h3>
+                  <p class="text-gray-400">Medi-Caps University (2022–Present)</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-emerald-400 group hover:scale-105 transition-transform">
+              <div class="flex items-center gap-4 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <i class="fas fa-trophy text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl text-white">JEE Mains 2022</h3>
+                  <p class="text-gray-400">Scored 82.3 Percentile</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-yellow-400 group hover:scale-105 transition-transform">
+              <div class="flex items-center gap-4 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <i class="fas fa-code text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl text-white">LeetCode</h3>
+                  <p class="text-gray-400">Solved 250+ problems</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="modern-card p-6 rounded-2xl border-l-4 border-purple-400 group hover:scale-105 transition-transform">
+              <div class="flex items-center gap-4 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <i class="fas fa-star text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl text-white">HackerRank</h3>
+                  <p class="text-gray-400">4★ C++ coder</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 lg:p-16 fade-in text-center">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-envelope text-white text-xl"></i>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            Let's <span class="gradient-text">Connect</span>
+          </h2>
+        </div>
+        
+        <div class="mb-8">
+          <span class="mono text-cyan-400 text-sm">// Ready to start your next project?</span>
+        </div>
+        
+        <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
+          Have a project in mind or want to discuss opportunities in data engineering? 
+          I'd love to hear from you and explore how we can work together.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a href="contact.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-4 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 text-lg font-semibold">
+            <i class="fas fa-paper-plane"></i>
+            <span>Send Message</span>
+          </a>
+          <a href="mailto:preetpatidar115@gmail.com" class="inline-flex items-center gap-3 modern-card hover:neon-glow text-white px-8 py-4 rounded-full transform hover:scale-105 transition-all duration-300 text-lg font-semibold">
+            <i class="fas fa-envelope"></i>
+            <span>Direct Email</span>
+          </a>
+        </div>
+        
+        <div class="mt-8 pt-8 border-t border-gray-700">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-6 text-gray-300">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-cyan-400"></i>
+              <span>Indore, Madhya Pradesh</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clock text-cyan-400"></i>
+              <span>Response within 24 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="modern-card rounded-3xl p-10 text-center">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-heart text-white text-xl pulse"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white">Let's Connect</h3>
+        </div>
+        
+        <div class="flex justify-center gap-6 mb-8">
+          <a href="https://github.com/preetpatidar09" target="_blank" class="modern-card rounded-full p-4 text-white hover:text-cyan-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+            <i class="fab fa-github text-2xl group-hover:animate-pulse"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/preet-patidar-b59480249" target="_blank" class="modern-card rounded-full p-4 text-white hover:text-blue-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+            <i class="fab fa-linkedin text-2xl group-hover:animate-pulse"></i>
+          </a>
+          <a href="https://wa.me/917828394599" target="_blank" class="modern-card rounded-full p-4 text-white hover:text-green-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+            <i class="fab fa-whatsapp text-2xl group-hover:animate-pulse"></i>
+          </a>
+          <a href="mailto:preetpatidar115@gmail.com" class="modern-card rounded-full p-4 text-white hover:text-pink-400 transition-all transform hover:scale-125 hover:rotate-12 group">
+            <i class="fas fa-envelope text-2xl group-hover:animate-pulse"></i>
+          </a>
+        </div>
+        
+        <div class="border-t border-gray-700 pt-8">
+          <p class="text-gray-400 text-lg mb-2">
+            <span class="mono text-cyan-400">// </span>
+            Built with passion and modern web technologies
+          </p>
+          <p class="text-gray-500">
+            © 2025 <span class="text-white font-semibold">Preet Patidar</span>. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+    
+    // Close mobile menu when clicking on links
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        mobileMenu.classList.remove('open');
+      }
+    });
+    
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = '0.1s';
+          entry.target.classList.add('fade-in');
+        }
+      });
+    }, observerOptions);
+    
+    // Observe all sections
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+    
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Bounce-in animation is handled by CSS
+
+  
+const track = document.getElementById('carousel-track');
+const slides = document.querySelectorAll('.carousel-slide');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const dots = document.querySelectorAll('#carousel-dots .dot');
+
+let currentIndex = 0;
+
+function updateCarousel() {
+  track.style.transform = `translateX(-${currentIndex * 100}%)`;
+  dots.forEach((dot, index) => {
+    dot.classList.remove('active');
+    if (index === currentIndex) {
+      dot.classList.add('active');
+      dot.classList.remove('bg-white', 'opacity-30');
+      dot.classList.add('bg-gradient-to-r', 'from-cyan-400', 'to-blue-500', 'opacity-100');
+    } else {
+      dot.classList.remove('bg-gradient-to-r', 'from-cyan-400', 'to-blue-500', 'opacity-100');
+      dot.classList.add('bg-white', 'opacity-30');
+    }
+  });
+}
+
+nextBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % slides.length;
+  updateCarousel();
+});
+
+prevBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+  updateCarousel();
+});
+
+dots.forEach(dot => {
+  dot.addEventListener('click', (e) => {
+    currentIndex = parseInt(e.target.dataset.slide);
+    updateCarousel();
+  });
+});
+
+updateCarousel();
+
+
+  </script>
+</body>
+</html>
