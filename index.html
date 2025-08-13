@@ -95,7 +95,35 @@
       background: rgba(0, 212, 255, 0.1);
       border-color: var(--accent-color);
     }
-    
+
+    /* Mirror animation for specific sections */
+    .mirror-card {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mirror-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .mirror-card:hover::before {
+      left: 100%;
+    }
+
+    .mirror-card:hover {
+      transform: scale(1.05);
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--accent-color);
+    }
+
     .floating {
       animation: float 4s ease-in-out infinite;
     }
@@ -330,14 +358,6 @@
         <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
           <!-- Profile Image & Contact Info -->
           <div class="flex flex-col sm:flex-row items-center gap-8 lg:gap-12 text-center sm:text-left">
-            <div class="flex-shrink-0 floating">
-              <div class="relative">
-                <img src="IMG2.JPG" alt="Preet Patidar"
-                     class="w-36 h-36 sm:w-44 sm:h-44 lg:w-56 lg:h-56 rounded-full shadow-2xl object-cover border-4 border-cyan-400 transform transition-all duration-500 hover:scale-110 hover:border-pink-400 neon-glow">
-                <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border-4 border-black pulse"></div>
-                <div class="absolute -top-2 -left-2 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-ping"></div>
-              </div>
-            </div>
             <div class="text-white">
               <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent">
                 Preet Patidar
@@ -377,7 +397,7 @@
 
           <!-- Right-side Description -->
           <div class="max-w-md lg:max-w-lg">
-            <div class="modern-card rounded-3xl p-8 text-white leading-relaxed border-l-4 border-cyan-400">
+            <div class="modern-card mirror-card rounded-3xl p-8 text-white leading-relaxed border-l-4 border-cyan-400">
               <div class="mb-4">
                 <span class="mono text-cyan-400 text-sm">// About me</span>
               </div>
@@ -434,7 +454,7 @@
           </div>
           
           <div class="space-y-6">
-            <div class="modern-card p-6 rounded-2xl border-l-4 border-cyan-400">
+            <div class="modern-card mirror-card p-6 rounded-2xl border-l-4 border-cyan-400">
               <div class="flex items-center gap-3 mb-3">
                 <i class="fas fa-target text-cyan-400 text-xl"></i>
                 <h3 class="text-xl font-semibold text-white">Mission</h3>
@@ -442,7 +462,7 @@
               <p class="text-gray-300">Building scalable data systems that transform raw information into actionable business insights.</p>
             </div>
             
-            <div class="modern-card p-6 rounded-2xl border-l-4 border-pink-400">
+            <div class="modern-card mirror-card p-6 rounded-2xl border-l-4 border-pink-400">
               <div class="flex items-center gap-3 mb-3">
                 <i class="fas fa-lightbulb text-pink-400 text-xl"></i>
                 <h3 class="text-xl font-semibold text-white">Vision</h3>
@@ -450,7 +470,7 @@
               <p class="text-gray-300">To contribute to innovative teams where I can grow as a Data Engineer and solve real-world challenges.</p>
             </div>
             
-            <div class="modern-card p-6 rounded-2xl border-l-4 border-emerald-400">
+            <div class="modern-card mirror-card p-6 rounded-2xl border-l-4 border-emerald-400">
               <div class="flex items-center gap-3 mb-3">
                 <i class="fas fa-heart text-emerald-400 text-xl"></i>
                 <h3 class="text-xl font-semibold text-white">Passion</h3>
